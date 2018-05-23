@@ -4,13 +4,15 @@ class Player {
     this.y = y;
     this.sprite = 'images/enemy-bug.png';
   }
-  update(dt) {}
-  render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  update(dt) {
     if (this.x >= blockWidth*7) {
       this.reset();
     }
   }
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+  // Set the player movement
   handleInput(key) {
     (key === 'up' && this.y != blockHeight*0)?
     this.y -= blockHeight : this.y = this.y;
@@ -21,6 +23,7 @@ class Player {
     (key === 'left' && this.x != blockWidth*0)?
     this.x -= blockWidth : this.x = this.x;
   }
+  // Reset the player position to start point
   reset() {
     setTimeout(() => {
       this.x = 0;
@@ -45,17 +48,11 @@ class Enemy {
       this.speed = this.randSpeed();
       this.sprite = this.randSprite();
     }
-    if (player.y + 55 < this.y + 135 &&
-      player.x + 80 > this.x + 30 &&
-      player.y + 100 > this.y + 75 &&
-      player.x + 20 < this.x + 70) {
-      player.reset();
-      star.count = 0;
-    }
   }
   render() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
   }
+  // Randomize the enemies start position and speed
   randStart() {
     const random = (blockWidth*Math.floor(Math.random()*6+1));
     return random;
@@ -64,6 +61,7 @@ class Enemy {
     const random = Math.random() * 400 + 50;
     return random;
   }
+  // Select a random sprite for each enemy
   randSprite() {
     const charSprites = [
       'images/char-boy.png',
@@ -85,19 +83,13 @@ class Star {
     this.count = 0;
     this.starElement = document.querySelector('h4');
   }
-  update(dt) {}
-  render() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-    if (player.y + 55 < this.y + 135 &&
-      player.x + 80 > this.x + 30 &&
-      player.y + 100 > this.y + 75 &&
-      player.x + 20 < this.x + 70) {
-        this.count++;
-        this.x = this.starX();
-        this.y = this.starY();
-    }
+  update(dt) {
     this.starElement.innerHTML = this.count;
   }
+  render() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  }
+  // Set random position for the star
   starX() {
     const random = (blockWidth*Math.floor(Math.random()*6+1));
     return random;

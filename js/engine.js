@@ -82,7 +82,8 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
+        checkStars();
     }
 
     /* This is called by the update function and loops through all of the
@@ -97,6 +98,30 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        star.update();
+    }
+
+    function checkCollisions() {
+        allEnemies.forEach(function(enemy) {
+            if (player.y + 55 < enemy.y + 135 &&
+            player.x + 80 > enemy.x + 30 &&
+            player.y + 100 > enemy.y + 75 &&
+            player.x + 20 < enemy.x + 70) {
+                player.reset();
+                star.count = 0;
+            }
+        });
+    }
+
+    function checkStars() {
+        if (player.y + 55 < star.y + 135 &&
+        player.x + 80 > star.x + 30 &&
+        player.y + 100 > star.y + 75 &&
+        player.x + 20 < star.x + 70) {
+            star.count++;
+            star.x = star.starX();
+            star.y = star.starY();
+        }
     }
 
     /* This function initially draws the "game level", it will then call
